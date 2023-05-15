@@ -47,7 +47,8 @@ request.setRawHeader(QByteArray("Last-Modified"), QByteArray("Sun, 06 Nov 1994 0
 ```
 
 3. void setTransferTimeout(int timeout = DefaultTransferTimeoutConstant)
-> 设置传输超时时间（毫秒）。如果在超时到期之前没有传输字节，传输将被中止。零表示未设置计时器。 如果未提供参数，则超时为 QNetworkRequest::DefaultTransferTimeoutConstant。如果未调用此函数，则超时将被禁用且值为 0。
+> 设置传输超时时间（毫秒）。如果在超时到期之前没有传输字节，传输将被中止。零表示未设置计时器。 如果未提供参数，则超时为 QNetworkRequest::DefaultTransferTimeoutConstant。如果未调用此函数，则超时将被禁用且值为 0。  
+> 注意：Qt5.1以上支持
 
 # 使用QNetworkAcessManager的get()、post()、put()等函数发送请求
 
