@@ -97,7 +97,7 @@ QNetworkReply 是 QIODevice的子类，这意味着一旦从对象中读取数�
 * `UnknownProxyError`：**检测到与代理相关的未知错误**。  
 * `UnknownContentError`：**检测到与远程内容相关的未知错误**。  
 * `ProtocolFailure`：**检测到协议故障**（解析错误、无效或意外响应等）。  
-* `UnknownServerError`：**检测到与服务器响应相关的未知错误**。  
+* `UnknownServerError`：**检测到与服务器响应相关的未知错误**。
 
 ## 函数
 
