@@ -140,3 +140,77 @@ CallMsgFilter的最后一个参数简单的传递给钩子子程；可以输入�
    Remarks: 钩子子程为了特定的钩子类型而被安装。CallNextHookEx方法调用钩子链表中的下一个钩子。调用CallNextHookEx是可选的，但是强烈要求调用该函数；否则，其他已经安装有钩子的应用程序将收不到钩子通知，从而可能导致不正确的行为。除非绝对需要阻止通知被其他应用程序看到，其它情况下都应该调用CallNextHookEx方法。
    */
    ```
+
+# 实现hook拦截指定弹窗需要以下步骤：
+
+1. 找到弹窗的窗口标题或类名。
+
+2. 创建一个钩子函数，用于拦截弹窗消息。
+
+3. 在钩子函数中判断消息是否是弹窗相关的消息，如果是，则进行拦截操作。
+
+4. 将钩子函数安装到进程中。
+
+下面是一个简单的C++代码示例，实现hook拦截指定弹窗：
+
+```C++
+#include <iostream>
+#include <Windows.h>
+
+// 定义钩子函数
+LRESULT CALLBACK HookProc(int nCode, WPARAM wParam, LPARAM lParam)
+{
+    if (nCode == HC_ACTION)
+    {
+        // 弹窗的类名或窗口标题
+        const char* pszClassName = "Dialog";
+        const char* pszWindowTitle = "My Dialog";
+
+        // 获取消息
+        MSG* pMsg = (MSG*)lParam;
+
+        // 判断是否是弹窗相关消息
+        if (pMsg->message == WM_INITDIALOG)
+        {
+            HWND hWnd = pMsg->hwnd;
+            char szText[256] = { 0 };
+
+            // 获取窗口标题
+            GetWindowTextA(hWnd, szText, 255);
+            if (!strcmp(szText, pszWindowTitle))
+            {
+                // 关闭弹窗
+                SendMessageA(hWnd, WM_CLOSE, 0, 0);
+            }
+        }
+    }
+
+    // 继续执行下一个钩子
+    return CallNextHookEx(NULL, nCode, wParam, lParam);
+}
+
+int main()
+{
+    // 安装钩子函数
+    HHOOK hHook = SetWindowsHookEx(WH_CALLWNDPROC, HookProc, NULL, GetCurrentThreadId());
+    if (hHook == NULL)
+    {
+        std::cerr << "Error: Failed to install hook!" << std::endl;
+        return -1;
+    }
+
+    // 循环等待消息
+    MSG msg = { 0 };
+    while (GetMessage(&msg, NULL, 0, 0))
+    {
+        TranslateMessage(&msg);
+        DispatchMessage(&msg);
+    }
+
+    // 卸载钩子函数
+    UnhookWindowsHookEx(hHook);
+    return 0;
+}
+```
+
+该示例中，钩子函数使用`WH_CALLWNDPROC`挂钩方式，拦截发送给窗口的消息，并判断是否是弹窗相关的消息。如果是，则关闭该弹窗。请根据实际需求修改代码。

@@ -4,5 +4,6 @@
         "ostream": "cpp"
     },
     "cmake.generator": "MinGW Makefiles",
-    "docsifyPreview.indexFile": "/docs/index.html"
+    "docsifyPreview.indexFile": "/docs/index.html",
+    "cmake.configureOnOpen": false
 }
