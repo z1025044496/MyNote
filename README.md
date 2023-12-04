@@ -1,4 +1,2 @@
 # MyNote
-| this is my c++ note
-# Test
-| 测试SSH方式上传
+https://z1025044496.github.io/MyNote/
