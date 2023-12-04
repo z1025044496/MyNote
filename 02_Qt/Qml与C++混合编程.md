@@ -173,7 +173,7 @@ void QML_learning::Slt_FirstBtnClicked()
 
 上述代码是在qml中单击按钮后将信号传至cpp修改ui文本，然后将cpp中的信号传至qml修改按钮背景颜色。效果如下：
 
-![](Image/c++与qml信号槽直接连接.gif)
+![](../Image/c++与qml信号槽直接连接.gif)
 
 ## 2. QML使用C++类
 
@@ -341,7 +341,7 @@ Rectangle
 ```
 
 效果：
-![](Image/QML使用C++类.gif)
+![](../Image/QML使用C++类.gif)
 
 ## 3. QML使用C++对象
 
@@ -498,4 +498,4 @@ Rectangle
 ```
 
 效果：
-![](Image/QML使用C++对象.gif)
+![](../Image/QML使用C++对象.gif)
