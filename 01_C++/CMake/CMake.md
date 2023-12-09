@@ -1,4 +1,4 @@
-# CMake概述
+# 1. CMake概述
 
 CMake 是一个项目构建工具，并且是跨平台的。关于项目构建我们所熟知的还有Makefile（通过 make 命令进行项目的构建），大多是IDE软件都集成了make，比如：VS 的 nmake、linux 下的 GNU make、Qt 的 qmake等，如果自己动手写 makefile，会发现，makefile 通常依赖于当前的编译平台，而且编写 makefile 的工作量比较大，解决依赖关系时也容易出错。
 
@@ -16,10 +16,34 @@ CMake 是一个项目构建工具，并且是跨平台的。关于项目构建�
 > 3. 简化编译构建过程和编译过程
 > 4. 可扩展：可以为 cmake 编写特定功能的模块，扩充 cmake 功能
 
-# CMake使用
+# 2. CMake使用
 
-# 预宏定义
+`CMake`支持大写、小写、混合大小写的命令。如果在编写CMakeLists.txt文件时使用的工具有对应的命令提示，那么大小写随缘即可，不要太过在意。
 
-# 嵌套的CMake
+## 2.1 注释
 
-# 流程控制
+### 2.1.1 注释行
+
+`CMake`使用`#`进行行注释，可以放在任何位置。
+
+```cmake
+# 这是一个 CMakeLists.txt 文件
+cmake_minimum_required(VERSION 3.0.0)
+```
+
+### 2.1.2 块注释
+
+`CMake`使用`#[[ ]]`形式进行块注释。
+
+```cmake
+#[[ 这是一个 CMakeLists.txt 文件。
+这是一个 CMakeLists.txt 文件
+这是一个 CMakeLists.txt 文件]]
+cmake_minimum_required(VERSION 3.0.0)
+```
+
+# 3. 预宏定义
+
+# 4. 嵌套的CMake
+
+# 5. 流程控制
