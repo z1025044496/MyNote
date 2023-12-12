@@ -1,7 +1,7 @@
 * [C++](/01_C++/C++从0开始.md)
   * [C++从0开始](/01_C++/C++从0开始.md)
   * [C++并发](/01_C++/C++并发.md)
-  * [CMake](/01_C++/CMake/VScode+CMake_for_Linux.md)
+  * [CMake](/01_C++/CMake/CMake.md)
 * [Qt](/02_Qt/QT想到哪记到哪.md)
   * [QT想到哪记到哪](/02_Qt/QT想到哪记到哪.md)
   * [QML与C++混合编程](/02_Qt/Qml与C++混合编程.md)
