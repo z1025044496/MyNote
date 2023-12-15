@@ -1,5 +1,65 @@
 # std::thread
 
+## std::thread
+
+* 每个程序有一个执行main()函数的主线程，将函数添加为`std::thread`的参数即可启动另一个线程，两个线程会同时运行
+```cpp
+void Fun01()
+{
+    std::cout << "this test01 fun!" << std::endl;
+}
+
+void test01()
+{
+    std::thread thA(Fun01);
+    thA.join();
+}
+```
+
+* `std::thread`的参数也可以是函数对象或者lambda
+
+```cpp
+struct MyStruct
+{
+    MyStruct()
+    {
+        std::cout << "this is constructor fun of MyStruct" << std::endl;
+    }
+
+    void operator()() const 
+    { 
+        std::cout << "this is overload() fun of MyStruct" << std::endl; 
+    }
+};
+
+MyStruct stest(){
+
+}
+
+#include <functional>
+
+void test02()
+{
+    MyStruct stA;
+
+    std::function< MyStruct() > fcn;
+
+    std::thread t1(stA);
+    std::thread t2( MyStruct() );
+
+    std::thread t3{MyStruct()};
+    std::thread t4((MyStruct()));
+    std::thread t5{[] { std::cout << "this is lambda fun" << std::endl; }};
+
+    t1.join();
+    t3.join();
+    t4.join();
+    t5.join();
+}
+```
+
+* 在线程销毁前要对其调用`join`等待线程退出或`detach`将线程分离，否则`std::thread`的析构函数会调用`std::terminate`终止程序，注意分离线程可能出现空悬引用的隐患
+
 ## 传递参数
 
 1. 将参数作为`std::thread`构造函数的附加参数
