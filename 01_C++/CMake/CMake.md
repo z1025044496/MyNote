@@ -26,7 +26,7 @@ CMake 是一个项目构建工具，并且是跨平台的。关于项目构建�
 
 `CMake`使用`#`进行行注释，可以放在任何位置。
 
-```php
+```cmake
 # 这是一个 CMakeLists.txt 文件
 cmake_minimum_required(VERSION 3.0.0)
 ```
@@ -35,7 +35,7 @@ cmake_minimum_required(VERSION 3.0.0)
 
 `CMake`使用`#[[ ]]`形式进行块注释。
 
-```php
+```cmake
 #[[ 这是一个 CMakeLists.txt 文件。
 这是一个 CMakeLists.txt 文件
 这是一个 CMakeLists.txt 文件]]
@@ -148,7 +148,7 @@ zhaohaifei@XTZJ-20221120IX:/mnt/d/MyGithubNote/MyNote/code/CMake-demo/V1$ tree
 
 在上述源文件所在目录下添加一个新文件`CMakeLists.txt`，文件内容如下：
 
-```php
+```cmake
 cmake_minimum_required(VERSION 3.15)
 project(CALC)
 add_executable(app add.cpp div.cpp main.cpp mult.cpp sub.cpp)
@@ -158,7 +158,7 @@ add_executable(app add.cpp div.cpp main.cpp mult.cpp sub.cpp)
 
 * `project`：定义工程名称，并可指定工程的版本、工程描述、web主页地址、支持的语言（默认情况支持所有语言），如果不需要这些都是可以忽略的，只需要指定出工程名字即可。
 
-    ```php
+    ```cmake
     # PROJECT 指令的语法是：
     project(<PROJECT-NAME> [<language-name>...])
     project(<PROJECT-NAME>
@@ -170,14 +170,14 @@ add_executable(app add.cpp div.cpp main.cpp mult.cpp sub.cpp)
 
 * `add_executable`：定义工程会生成一个可执行程序
 
-    ```php
+    ```cmake
     add_executable(可执行程序名 源文件名称)
     ```
 
   * 这里的可执行程序名和project中的项目名没有任何关系
 
   * 源文件名可以是一个也可以是多个，如有多个可用空格或;间隔
-        ```php
+        ```cmake
         # 样式1
         add_executable(app add.cpp div.cpp main.cpp mult.cpp sub.cpp)
         # 样式2
@@ -269,7 +269,7 @@ a / b = 1.666667
 
 通过上面的例子可以看出，如果在CMakeLists.txt文件所在目录执行了cmake命令之后就会生成一些目录和文件（包括 makefile 文件），如果再基于makefile文件执行make命令，程序在编译过程中还会生成一些中间文件和一个可执行文件，这样会导致整个项目目录看起来很混乱，不太容易管理和维护，此时我们就可以把生成的这些与项目源码无关的文件统一放到一个对应的目录里边，比如将这个目录命名为build:
 
-```php
+```cmake
 zhaohaifei@XTZJ-20221120IX:/mnt/d/MyGithubNote/MyNote/code/CMake-demo/V1$ mkdir build
 zhaohaifei@XTZJ-20221120IX:/mnt/d/MyGithubNote/MyNote/code/CMake-demo/V1$ cd build/
 zhaohaifei@XTZJ-20221120IX:/mnt/d/MyGithubNote/MyNote/code/CMake-demo/V1/build$ cmake ..
@@ -315,11 +315,192 @@ a / b = 1.666667
 
 ## 2.3 私人定制
 
+### 2.3.1 定义变量
+
+在上面的例子中一共提供了5个源文件，假设这五个源文件需要反复被使用，每次都直接将它们的名字写出来确实是很麻烦，此时我们就需要定义一个变量，将文件名对应的字符串存储起来，在cmake里定义变量需要使用`set`。
+
+```cmake
+# SET 指令的语法是：
+# [] 中的参数为可选项, 如不需要可以不写
+SET(VAR [VALUE] [CACHE TYPE DOCSTRING [FORCE]])
+```
+
+* `VAR`: 变量名
+* 
+* `VALUE`: 变量值
+
+```cmake
+# 方式1: 各个源文件之间使用空格间隔
+# set(SRC_LIST add.c  div.c   main.c  mult.c  sub.c)
+
+# 方式2: 各个源文件之间使用分号 ; 间隔
+set(SRC_LIST add.c;div.c;main.c;mult.c;sub.c)
+add_executable(app  ${SRC_LIST})
+```
+
+### 2.3.2 指定使用C++标准
+
+``` term
+zhaohaifei@XTZJ-20221120IX:/mnt/d/MyGithubNote/MyNote/code/CMake-demo/V1$ g++ *.cpp -std=c++11 -o app
+```
+
+上面的例子中通过参数`-std=c++11`指定出要使用c++11标准编译程序，C++标准对应有一宏叫做`DCMAKE_CXX_STANDARD`。在CMake中想要指定C++标准有两种方式：
+
+1. 在CMakeLists.txt中通过`set`命令指定
+
+```cmake
+#增加-std=c++11
+set(CMAKE_CXX_STANDARD 11)
+#增加-std=c++14
+set(CMAKE_CXX_STANDARD 14)
+#增加-std=c++17
+set(CMAKE_CXX_STANDARD 17)
+```
+
+2. 在执行cmake命令的时候指定出这个宏的值
+
+```term
+#增加-std=c++11
+zhaohaifei@XTZJ-20221120IX:/mnt/d/MyGithubNote/MyNote/code/CMake-demo/V1/build$ cmake .. -DCMAKE_CXX_STANDARD=11
+#增加-std=c++14
+zhaohaifei@XTZJ-20221120IX:/mnt/d/MyGithubNote/MyNote/code/CMake-demo/V1/build$ cmake .. -DCMAKE_CXX_STANDARD=14
+#增加-std=c++17
+zhaohaifei@XTZJ-20221120IX:/mnt/d/MyGithubNote/MyNote/code/CMake-demo/V1/build$ cmake .. -DCMAKE_CXX_STANDARD=17
+```
+
+### 2.3.3 指定输出的路径
+
+在CMake中指定可执行程序输出的路径，也对应一个宏，叫做`EXECUTABLE_OUTPUT_PATH`，它的值还是通过set命令进行设置:
+
+```cpp
+set(HOME /home/robin/Linux/Sort)
+set(EXECUTABLE_OUTPUT_PATH ${HOME}/bin)
+```
+
+* 第一行：定义一个变量用于存储一个绝对路径
+* 第二行：将拼接好的路径值设置给EXECUTABLE_OUTPUT_PATH宏
+  * 如果这个路径中的子目录不存在，会自动生成，无需自己手动创建
+
+> [!NOTE]
+> 由于可执行程序是基于 cmake 命令生成的 makefile 文件然后再执行 make 命令得到的，所以如果此处指定可执行程序生成路径的时候使用的是相对路径 ./xxx/xxx，那么这个路径中的 ./ 对应的就是 makefile 文件所在的那个目录。
+
 ## 2.4 搜索文件
+
+`aux_source_directory`命令或者`file`命令
+
+### 2.4.1 方式1
+
+在CMake中使用`aux_source_directory`命令可以查找某个路径下的所有源文件，命令格式为
+
+```cmake
+aux_source_directory(< dir > < variable >)
+```
+
+* `dir`：要搜索的目录
+* `variable`：将从dir目录下搜索到的源文件列表存储到该变量中
+
+```cmake
+cmake_minimum_required(VERSION 3.15)
+
+project(CALC)
+
+# set(SRC_LIST add.cpp div.cpp main.cpp mult.cpp sub.cpp)
+aux_source_directory(${PROJECT_SOURCE_DIR} SRC_LIST)
+
+set(EXECUTABLE_OUTPUT_PATH ../bin)
+
+set(CMAKE_CXX_STANDARD 11)
+
+add_executable(app ${SRC_LIST})
+```
+
+* `PROJECT_SOURCE_DIR`: 执行`cmake`命令时，`cmake`后面跟随的路径
+
+### 2.4.2 方式2
+
+如果一个项目里边的源文件很多，在编写CMakeLists.txt文件的时候不可能将项目目录的各个文件一一罗列出来，这样太麻烦了。所以，在CMake中为我们提供了搜索文件的命令，他就是`file`（当然，除了搜索以外通过`file`还可以做其他事情）。
+
+```cmake
+file(GLOB/GLOB_RECURSE 变量名 要搜索的文件路径和文件类型)
+```
+
+* `GLOB`: 将指定目录下搜索到的满足条件的所有文件名生成一个列表，并将其存储到变量中。
+* `GLOB_RECURSE`：递归搜索指定目录，将搜索到的满足条件的文件名生成一个列表，并将其存储到变量中。
+
+搜索当前目录的src目录下所有的源文件，并存储到变量中
+
+```cmake
+cmake_minimum_required(VERSION 3.15)
+
+project(CALC)
+
+# set(SRC_LIST add.cpp div.cpp main.cpp mult.cpp sub.cpp)
+# aux_source_directory(${PROJECT_SOURCE_DIR} SRC_LIST)
+file(GLOB SRC_LIST ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp)
+
+set(EXECUTABLE_OUTPUT_PATH ../bin)
+
+set(CMAKE_CXX_STANDARD 11)
+
+add_executable(app ${SRC_LIST})
+```
+
+* `CMAKE_CURRENT_SOURCE_DIR`宏表示当前访问的CMakeLists.txt文件所在的路径。
+* 关于要搜索的文件路径和类型可加双引号，也可不加:
+```cmake
+file(GLOB MAIN_HEAD "${CMAKE_CURRENT_SOURCE_DIR}/src/*.h")
+```
 
 ## 2.5 包含头文件
 
+`include_directories`命令：
+
+```cmake
+include_directories(headpath)
+```
+
+当前目录结构如下：
+
+```term
+zhaohaifei@XTZJ-20221120IX:/mnt/d/MyGithubNote/MyNote/code/CMake-demo/V2$ tree
+.
+├── CMakeLists.txt
+├── bin
+│   └── app
+├── build
+├── include
+│   └── head.h
+└── src
+    ├── div.cpp
+    ├── main.cpp
+    ├── mult.cpp
+    ├── sub.cpp
+    └── add.cpp
+```
+
+`CMakeLists.txt`内容如下：
+```cmake
+cmake_minimum_required(VERSION 3.15)
+
+project(CALC)
+
+# set(SRC_LIST add.cpp div.cpp main.cpp mult.cpp sub.cpp)
+# aux_source_directory(${PROJECT_SOURCE_DIR} SRC_LIST)
+file(GLOB SRC_LIST ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include/)
+
+set(EXECUTABLE_OUTPUT_PATH ../bin)
+
+set(CMAKE_CXX_STANDARD 11)
+
+add_executable(app ${SRC_LIST})
+```
+
 ## 2.6 制作动态库或静态库
+
+### 2.6.1 制作静态库
+
+### 2.6.2 制作动态库
 
 ## 2.7 日志
 
