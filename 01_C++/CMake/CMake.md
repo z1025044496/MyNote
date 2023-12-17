@@ -267,6 +267,52 @@ a / b = 1.666667
 
 ### 2.2.2 VIP包房
 
+通过上面的例子可以看出，如果在CMakeLists.txt文件所在目录执行了cmake命令之后就会生成一些目录和文件（包括 makefile 文件），如果再基于makefile文件执行make命令，程序在编译过程中还会生成一些中间文件和一个可执行文件，这样会导致整个项目目录看起来很混乱，不太容易管理和维护，此时我们就可以把生成的这些与项目源码无关的文件统一放到一个对应的目录里边，比如将这个目录命名为build:
+
+```php
+zhaohaifei@XTZJ-20221120IX:/mnt/d/MyGithubNote/MyNote/code/CMake-demo/V1$ mkdir build
+zhaohaifei@XTZJ-20221120IX:/mnt/d/MyGithubNote/MyNote/code/CMake-demo/V1$ cd build/
+zhaohaifei@XTZJ-20221120IX:/mnt/d/MyGithubNote/MyNote/code/CMake-demo/V1/build$ cmake ..
+-- The C compiler identification is GNU 11.4.0
+-- The CXX compiler identification is GNU 11.4.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /usr/bin/cc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Configuring done (1.8s)
+-- Generating done (0.1s)
+-- Build files have been written to: /mnt/d/MyGithubNote/MyNote/code/CMake-demo/V1/build
+zhaohaifei@XTZJ-20221120IX:/mnt/d/MyGithubNote/MyNote/code/CMake-demo/V1/build$ make
+[ 16%] Building CXX object CMakeFiles/app.dir/add.cpp.o
+[ 33%] Building CXX object CMakeFiles/app.dir/div.cpp.o
+[ 50%] Building CXX object CMakeFiles/app.dir/main.cpp.o
+[ 66%] Building CXX object CMakeFiles/app.dir/mult.cpp.o
+[ 83%] Building CXX object CMakeFiles/app.dir/sub.cpp.o
+[100%] Linking CXX executable app
+[100%] Built target app
+zhaohaifei@XTZJ-20221120IX:/mnt/d/MyGithubNote/MyNote/code/CMake-demo/V1/build$ tree -L 1
+.
+├── CMakeCache.txt
+├── CMakeFiles
+├── Makefile
+├── app
+└── cmake_install.cmake
+
+1 directory, 4 files
+zhaohaifei@XTZJ-20221120IX:/mnt/d/MyGithubNote/MyNote/code/CMake-demo/V1/build$ ./app 
+a = 20, b = 12
+a + b = 32
+a - b = 8
+a * b = 240
+a / b = 1.666667
+```
+
 ## 2.3 私人定制
 
 ## 2.4 搜索文件
