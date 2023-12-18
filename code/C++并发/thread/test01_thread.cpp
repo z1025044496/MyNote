@@ -57,7 +57,9 @@ public:
     {
         for (int i = 0; i < 1000000; ++i) 
         {
-            call(x);  // 存在对象析构后引用空悬的隐患
+            // call(x);  
+            // 存在对象析构后引用空悬的隐患
+            std::cout << x << std::endl;
         }
     }
 
