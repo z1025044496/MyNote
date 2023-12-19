@@ -16,6 +16,9 @@
   <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css">
   <link rel="stylesheet" href="//fastly.jsdelivr.net/npm/katex@latest/dist/katex.min.css" />
 
+  <!-- 文件夹样式 -->
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify-sidebar-collapse/dist/sidebar-folder.min.css" />
+
 </head>
 <body>
   <div id="app"></div>
@@ -25,6 +28,10 @@
       repo: 'https://github.com/z1025044496/MyNote',
       loadNavbar: false, 
       loadSidebar: true,
+      alias: {
+        '/.*/_sidebar.md': '/_sidebar.md'
+      },
+      coverpage: true,
       subMaxLevel: 3,
       search: {
         paths: 'auto',
