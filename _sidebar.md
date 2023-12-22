@@ -1,4 +1,5 @@
 * [C++](/01_C++/README.md)
 * [Qt](/02_Qt/README.md)
 * [Leetcode](/03_Leetcode/README.md)
+* [HTML](/05_html/README.md)
 * [other](/04_other/README.md)
