@@ -2,4 +2,5 @@
 * [Qt](/02_Qt/README.md)
 * [Leetcode](/03_Leetcode/README.md)
 * [HTML](/05_html/README.md)
+* [Python](/06_Python/README.md)
 * [other](/04_other/README.md)
