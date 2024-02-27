@@ -148,17 +148,17 @@ Scrapy提供了两种类型的命令。一种必须在Scrapy项目中运行(针�
 
 *使用`EDITOR`中设定的编辑器编辑给定的spider*
 
-> ![NOTE]
+> [!NOTE]
 > 这个命令没啥用，自己找个编辑器敲代码就成
 
 ### `fetch`
 
-* 语法: `scrapy fetch <url>``
+* 语法: `scrapy fetch <url>`
 * 是否需要项目: no
 
 *使用Scrapy下载器(downloader)下载给定的URL，并将获取到的内容送到标准输出。*
 
-> ![NOTE]
+> [!NOTE]
 > 该命令以spider下载页面的方式获取页面。例如，如果spider有 USER_AGENT 属性修改了 User Agent，该命令将会使用该属性。
 > 可以使用该命令来查看spider如何获取某个特定页面。
 > 该命令如果非项目中运行则会使用默认Scrapy downloader设定。
@@ -455,6 +455,3 @@ DOWNLOADER_MIDDLEWARES = {
 `exception`(`Exception`对象) – 抛出的异常
 
 `spider`(`Spider`对象) – request对应的spider
-
-# 重试
-
