@@ -455,3 +455,41 @@ DOWNLOADER_MIDDLEWARES = {
 `exception`(`Exception`对象) – 抛出的异常
 
 `spider`(`Spider`对象) – request对应的spider
+
+# 6. items
+
+items主要目标是从非结构化来源（通常是网页）提取结构化数据。Scrap爬虫可以将提取的数据作为Python语句返回。虽然方便和熟悉，Python dicts缺乏结构：很容易在字段名称中输入错误或返回不一致的数据，特别是在与许多爬虫的大项目。要定义公共输出数据格式，Scrapy提供`Item`类。 `Item`对象是用于收集所抓取的数据的简单容器。它们提供了一个类似字典的API，具有用于声明其可用字段的方便的语法。
+
+## 1. Items 定义
+
+Items本身是一个python类，内部的项使用`Field`函数声明：
+
+```python
+import scrapy
+
+class Product(scrapy.Item):
+    name = scrapy.Field()
+    price = scrapy.Field()
+    stock = scrapy.Field()
+    tags = scrapy.Field()
+    last_updated = scrapy.Field(serializer=str)
+```
+
+## 2. Item Field
+
+`Field`用于为每个字段指定元数据
+
+# 7. 管道
+
+每一个管道都是一个python类，用于实现数据的清洗和保存，能够定义多个管道实现不同的功能。其内部主要有以下三个函数
+
+> `process_item(self,item,spider)`: 实现对item数据的处理
+
+1. 管道类中必须有的函数
+2. 实现对`item`数据的处理
+3. 必须`return item`
+
+> `open_spider(self, spider)`: 在爬虫开启的时候仅执行一次
+
+> `close_spider(self, spider)`: 在爬虫关闭的时候仅执行一次
+
