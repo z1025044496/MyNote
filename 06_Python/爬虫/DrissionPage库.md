@@ -181,6 +181,71 @@ page.set.load_mode.eager()  # 设置为eager模式
 page.get('https://www.baidu.com')
 ```
 
+## 3. 获取网页信息
+
+|变量/函数|类型|返回值|说明|
+|---|---|---|---|
+|页面信息|
+|`html`|`str`|/|返回当前页面html文本|
+|`json`|`str`|/|此属性把请求内容解析成 json。假如用浏览器访问会返回 *.json 文件的 url，浏览器会把 json 数据显示出来，这个参数可以把这些数据转换为dict格式。如果是API返回的json字符串，请使用 SessionPage 对象而不是 ChromiumPage。|
+|`title`|`str`|/|返回当前页面title文本。|
+|`user_agent`|`str`|/|返回当前页面 user agent 信息。|
+|`browser_version`|`str`|/|返回当前浏览器版本号。|
+|`save()`|`path`: 保存路径   `name`: 保存的文件名   `as_pdf`: 为`Ture`保存为 pdf，否则保存为mhtml 且忽略`kwargs`参数   `**kwargs`: pdf 生成参数|`as_pdf`为`False`时返回mhtml文本，为`True`时返回文件字节数据|当前页面保存为文件，同时返回保存的内容。|
+|运行状态信息|
+|`url`|`str`|\|此属性返回当前访问的 url。|
+|`address`|`str`|\|返回当前对象控制的页面地址和端口。|
+|`tab_id`|`str`|\|属性返回当前标签页的id|
+|`process_id`|`str`|\|此属性返回浏览器进程id。|
+|`process_id`|`int` `None`|\|此属性返回浏览器进程id。|
+|`states.is_loading`|`bool`|\|返回页面是否正在加载状态。|
+|`states.ready_state`|`str`|`connecting`：网页连接中   `loading`：表示文档还在加载中   `interactive`：DOM已加载，但资源未加载完成  `complete`：所有内容已完成加载|此属性返回页面当前加载状态|
+|`url_available`|`bool`|\|值返回当前链接是否可用。|
+|`states.has_alert`|`bool`|\|返回页面是否存在弹出框。|
+|窗口信息|
+|`rect.size`|`Tuple[int, int]`|\|返回页面大小，格式：(宽, 高)|
+|`rect.window_size`|`Tuple[int, int]`|\|返回页面大小，格式：(宽, 高)|
+|`rect.window_location`|`Tuple[int, int]`|\|返回窗口在屏幕上的坐标，左上角为(0, 0)。|
+|`rect.window_state`|`str`|\|此属性以返回窗口当前状态，有`normal`、`fullscreen`、`maximized`、 `minimized`几种|
+|`rect.viewport_size`|`Tuple[int, int]`|\|返回视口大小，不含滚动条。|
+|`rect.viewport_size_with_scrollbar`|`Tuple[int, int]`|\|返回浏览器窗口大小，含滚动条，格式：(宽, 高)|
+|`rect.page_location`|`Tuple[int, int]`|\|返回页面左上角在屏幕中坐标，左上角为(0, 0)。|
+|`rect.viewport_location`|`Tuple[int, int]`|\|返回视口在屏幕中坐标，左上角为(0, 0)。|
+|配置参数信息|
+|`timeout`|`int`、`float`|\|整体默认超时时间，包括元素查找、点击、处理提示框、列表选择等需要用到超时设置的地方，都以这个数据为默认值。默认为 10，可对其赋值。|
+|`timeouts`|`base`：与`timeout`属性是同一个值   `page_load`：用于等待页面加载   `script`：用于等待脚本执行|\|此属性以字典方式返回三种超时时间。|
+|`retry_times`|`int`|\|网络连接失败时的重试次数。默认为 3，可对其赋值。|
+|`retry_interval`|`int`|\|网络连接失败时的重试等待间隔秒数。默认为 2，可对其赋值。|
+|`load_mode`|`str`|`normal`：等待页面所有资源完成加载   `eager`：DOM加载完成即停止   `none`：页面完成连接即停止|页面加载策略|
+|cookies和缓存信息|
+|`cookies()`|`as_dict`: 是否以字典方式返回结果。为`True`时返回dict，且`all_info`参数无效；为`False`返回cookie组成的list   `all_domains`: 是否返回所有cookies，为`False`只返回当前url的   `all_info`: 返回的cookies是否包含所有信息，`False`时只包含name、value、domain信息|`dict`: `as_dict`为`True`时，返回字典格式cookies   `list`: `as_dict`为`False`时，返回cookies组成的列表|返回 cookies 信息。|
+|`session_storage()`|`item`: 要获取的项目，为`None`则返回全部项目组成的字典|`dict`: `item`参数为`None`时返回所有项目   `str`: 指定`item`时返回该项目内容|获取`sessionStorage`信息，可获取全部或单个项。|
+|`local_storage()`|`item`: 要获取的项目，为`None`则返回全部项目组成的字典|`dict`: `item`参数为`None`时返回所有项目   `str`: 指定`item`时返回该项目内容|获取`sessionStorage`信息，可获取全部或单个项。|获取`localStorage`信息，可获取全部或单个项|
+|内嵌对象|
+|` driver`|`Driver`|\|``返回当前页面对象使用的Driver对象。|
+
+## 4. 页面交互
+
+### 页面跳转
+
+### 元素管理
+
+### 执行脚本或命令
+
+### cookies及缓存
+
+### 运行参数设置
+
+### 窗口管理
+
+### 页面滚动
+
+### 滚动设置
+
+### 弹出消息处理
+
+### 关闭及重连
+
 # 查找元素
 
 ## 1. 基本用法
