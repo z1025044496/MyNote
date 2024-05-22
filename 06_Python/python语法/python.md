@@ -199,4 +199,160 @@ if __name__ == '__main__':
    pw.terminate()
 ```
 
+### 管道
+
+### 共享数据(Manager)
+
+```python
+if __name__ == '__main__':
+    with multiprocessing.Manager() as MG: #重命名
+        mydict=MG.dict()#主进程与子进程共享这个字典
+        mylist=MG.list(range(5))#主进程与子进程共享这个LIST
+
+        p=multiprocessing.Process(target=func,args=(mydict,mylist))
+
+        p.start()
+        p.join()
+
+        print(mylist)
+        print(mydict)
+```
+
+### 信号量
+
+### 事件
+
+python线程的事件用于主线程控制其他线程的执行，事件是一个简单的线程同步对象，其主要提供以下几个方法：
+
+|方法|注释|
+|---|---|
+|`clear`|将`flag`设置为`False`|
+|`set`|将`flag`设置为`True`|
+|`is_set`|判断是否设置了`flag`|
+|`wait`|会一直监听`flag`，如果没有检测到`flag`就一直处于阻塞状态|
+
+事件处理的机制：全局定义了一个`Flag`，当flag值为`False`，那么`event.wait()`就会阻塞，当`flag`值为`True`，那么`event.wait()`便不再阻塞。
+
+```python
+#利用Event类模拟红绿灯
+import threading
+import time
+ 
+event = threading.Event()
+  
+def lighter():
+    count = 0
+    event.set()     #初始值为绿灯
+    while True:
+        if 5 < count <=10 :
+            event.clear()  # 红灯，清除标志位
+            print("\33[41;1mred light is on...\033[0m")
+        elif count > 10:
+            event.set()  # 绿灯，设置标志位
+            count = 0
+        else:
+            print("\33[42;1mgreen light is on...\033[0m")
+ 
+        time.sleep(1)
+        count += 1
+ 
+def car(name):
+    while True:
+        if event.is_set():      #判断是否设置了标志位
+            print("[%s] running..."%name)
+            time.sleep(1)
+        else:
+            print("[%s] sees red light,waiting..."%name)
+            event.wait()
+            print("[%s] green light is on,start going..."%name)
+ 
+light = threading.Thread(target=lighter,)
+light.start()
+ 
+car = threading.Thread(target=car,args=("MINI",))
+car.start()
+```
+
+### fork
+
+Unix/Linux操作系统提供了一个`fork()`系统调用，它非常特殊。普通的函数调用，调用一次，返回一次，但是`fork()`调用一次，返回两次，因为操作系统自动把当前进程（称为父进程）复制了一份（称为子进程），然后，分别在父进程和子进程内返回。
+
+子进程永远返回0，而父进程返回子进程的ID。这样做的理由是，一个父进程可以`fork`出很多子进程，所以，父进程要记下每个子进程的ID，而子进程只需要调用`getppid()`就可以拿到父进程的ID。
+
+Python的`os`模块封装了常见的系统调用，其中就包括`fork`，可以在Python程序中轻松创建子进程
+
+```python
+import os
+
+print('Process (%s) start...' % os.getpid())
+# Only works on Unix/Linux/Mac:
+pid = os.fork()
+if pid == 0:
+    print('I am child process (%s) and my parent is %s.' % (os.getpid(), os.getppid()))
+else:
+    print('I (%s) just created a child process (%s).' % (os.getpid(), pid))
+```
+
+
+运行结果如下：
+
+> Process (876) start...   
+> I (876) just created a child process (877).   
+> I am child process (877) and my parent is 876.   
+
+### Process模块
+
+1. 注意：`Process`对象可以创建进程，**但`Process`对象不是进程，其删除与否与系统资源是否被回收没有直接的关系。**
+2. 主进程执行完毕后会默认等待子进程结束后回收资源，不需要手动回收资源；`join()`函数用来控制子进程结束的顺序,其**内部也有一个清除僵尸进程的函数，可以回收资源；**
+3. `Process`进程创建时，子进程会将主进程的`Process`对象完全复制一份，这样在主进程和子进程各有一个`Process`对象，**但是`p.start()`启动的是子进程，主进程中的`Process`对象作为一个静态对象存在，不执行。**
+4. 当**子进程执行完毕后，会产生一个僵尸进程，其会被join()函数回收**，或者再有一条进程开启，**`start`函数也会回收僵尸进程**，所以不一定需要写`join`函数。
+5. windows系统在子进程结束后会立即自动清除子进程的`Process`对象，而linux系统子进程的`Process`对象如果没有`join`函数和`start`函数的话会在主进程结束后统一清除。
+6. 进程直接的内存空间是隔离的
+
+```python
+from multiprocessing import Process
+n=100
+def work():
+    global n
+    n=0
+    print('子进程内: ',n)
+
+
+if __name__ == '__main__':
+    p=Process(target=work)
+    p.start()
+    print('主进程内: ',n)
+```
+
+### multiprocessing模块
+
+`Process`模块是一个创建进程的模块,借助这个模块可以创建进程
+
+```python
+Process([group [, target [, name [, args [, kwargs]]]]]) #由该类实例化得到的对象，表示一个子进程中的任务（尚未启动）
+```
+
+> 强调：
+
+1. 需要使用关键字的方式来指定参数
+2. `args`指定的为传给`target`函数的位置参数，是一个元组形式，必须有逗号
+
+> 参数介绍：
+
+1. `group`参数未使用，值始终为`None`
+2. `target`表示调用对象，即子进程要执行的任务
+3. `args`表示调用对象的位置参数元组，`args=(1,2,'egon',)`
+4. `kwargs`表示调用对象的字典,`kwargs={‘name’:’egon’,’age’:18}`
+5. `name`为子进程的名称
+
+> 方法介绍
+
+1. `p.start()`：启动进程，并调用该子进程中的`p.run()`
+2. `p.run()`: 进程启动时运行的方法，正是它去调用`target`指定的函数，我们自定义类的类中一定要实现该方法
+3. `p.terminate()`: 强制终止进程`p`，不会进行任何清理操作，如果`p`创建了子进程，该子进程就成了僵尸进程，使用该方法需要特别小心这种情况。如果p还保存了一个锁那么也将不会被释放，进而导致死锁
+4. `p.is_alive()`: 如果p仍然运行，返回`True`
+5. `p.join([timeout])`: 主线程等待`p`终止（强调：是主线程处于等的状态，而p是处于运行的状态）。`timeout`是可选的超时时间，需要强调的是，`p.join`只能`join`住`start`开启的进程，而不能join住run开启的进程
+
+> 属性介绍
+
 ## 其他问题

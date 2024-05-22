@@ -228,7 +228,114 @@ page.get('https://www.baidu.com')
 
 ### 页面跳转
 
+> `get()`
+
+|参数名称|类型|默认值|说明|
+|---|---|---|---|
+|`url`|`str`|必填|目标|url|
+|`show_errmsg`|`bool`|False|连接出错时是否显示和抛出异常|
+|`retry`|`int`|None|重试次数，为None时使用页面参数，默认3|
+|`interval`|`float`|None|重试间隔（秒），为None时使用页面参数，默认2|
+|`timeout`|`float`|None|加载超时时间（秒）|
+
+|返回类型|说明|
+|---|---|
+|bool|是否连接成功|
+
+> back()
+
+浏览历史中后退若干步。
+
+|参数名称|类型|默认值|说明|
+|---|---|---|---|
+|`steps`|int|1|后退步数|
+
+> forward()
+
+在浏览历史中前进若干步。
+
+|参数名称|类型|默认值|说明|
+|---|---|---|---|
+|`steps`|int|1|后退步数|
+
+> refresh()
+
+刷新当前页面。
+
+|参数名称|类型|默认值|说明|
+|---|---|---|---|
+|`ignore_cache`|`bool`|False|刷新时是否忽略缓存|
+
+>  stop_loading()
+
+此方法用于强制停止当前页面加载。
+
+> set.blocked_urls()
+
+设置忽略的连接。
+
+|参数名称|类型|默认值|说明|
+|---|---|---|---|
+|`urls`|`str` `list` `tuple` `None`|必填|要忽略的url，可传入多个，可用'*'通配符，传入None时清空已设置的项|
+
+```python
+# 设置不加载css文件
+page.set.blocked_urls('*.css')  
+```
+
 ### 元素管理
+
+> add_ele()
+
+创建一个元素。可选择是否插入到DOM。
+
+`html_or_info`传入元素完整html文本时，会插入到DOM。如`insert_to`参数为`None`，插入到body元素。
+
+传入元素信息（格式：(`tag, {name: value}`)）时，如`insert_to`参数为`None`，不插入到 DOM。此时返回的元素需用js方式点击。
+
+|参数名称|类型|默认值|说明|
+|---|---|---|---|
+|`html_or_info`|`str` `Tuple[str, dict]`|必填|新元素的html文本或信息；为tuple可新建不加入到DOM的元素|
+|`insert_to`|`str` `ChromiumElement` `Tuple[str, str]`|None|插入到哪个元素中，可接收元素对象和定位符；如为`None`，`html_or_info`是`str`时添加到body，否则不添加到DOM|
+|`before`|`str` `ChromiumElement` `Tuple[str, str]`|None|在哪个子节点前面插入，可接收对象和定位符，为None插入到父元素末尾|
+
+|返回类型|说明|
+|---|---|
+|`ChromiumElement`|新建的元素对象|
+
+```python
+from DrissionPage import ChromiumPage
+
+# 添加一个可见元素
+page = ChromiumPage()
+page.get('https://www.baidu.com')
+html = '<a href="https://DrissionPage.cn" target="blank">DrissionPage </a> '
+ele = page.add_ele(html, '#s-top-left', '新闻')  # 插入到导航栏
+ele.click()
+
+# 添加一个不可见元素
+page = ChromiumPage()
+info = ('a', {'innerText': 'DrissionPage', 'href': 'https://DrissionPage.cn', 'target': 'blank'})
+ele = page.add_ele(info)
+ele.click('js')  # 需用js点击
+```
+
+> remove_ele()
+
+此方法用于从页面上删除一个元素。
+
+|参数名称|类型|默认值|说明|
+|---|---|---|---|
+|`loc_or_ele`|`str` `Tuple[str, str]` `ChromiumElement`|必填|要删除的元素，可以是元素或定位符|
+
+```python
+# 删除一个已获得的元素
+ele = page('tag:a')
+page.remove_ele(ele)
+
+# 删除用定位符找到的元素
+page.remove_ele('tag:a')
+```
 
 ### 执行脚本或命令
 
