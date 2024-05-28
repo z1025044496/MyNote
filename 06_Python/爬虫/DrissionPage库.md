@@ -578,7 +578,7 @@ txt = page.handle_alert(accept=None)
 
 ## 5. 查找元素
 
-见下方[查找元素]()章节
+见下方[查找元素](#查找元素)章节
 
 ## 6. 获取元素信息
 
@@ -876,6 +876,52 @@ from DrissionPage.common import Keys
 |`offset_y`|`int`|0|y轴偏移量，向下向右为正|
 
 ## 8. ⭐监听网络数据
+
+### 等待并获取
+
+> [!WARNING]
+> 要先启动监听，再执行动作，listen.start()之前的数据包是获取不到的。
+
+```python
+from DrissionPage import ChromiumPage
+
+page = ChromiumPage()
+page.get('https://gitee.com/explore/all')  # 访问网址，这行产生的数据包不监听
+
+page.listen.start('gitee.com/explore')  # 开始监听，指定获取包含该文本的数据包
+for _ in range(5):
+    page('@rel=next').click()  # 点击下一页
+    res = page.listen.wait()  # 等待并获取一个数据包
+    print(res.url)  # 打印数据包url
+```
+
+输出：
+
+```term
+https://gitee.com/explore/all?page=2   
+https://gitee.com/explore/all?page=3   
+https://gitee.com/explore/all?page=4   
+https://gitee.com/explore/all?page=5  
+https://gitee.com/explore/all?page=6  
+```
+
+### 实时获取
+
+```python
+from DrissionPage import ChromiumPage
+
+page = ChromiumPage()
+page.listen.start('gitee.com/explore')  # 开始监听，指定获取包含该文本的数据包
+page.get('https://gitee.com/explore/all')  # 访问网址
+
+i = 0
+for packet in page.listen.steps():
+    print(packet.url)  # 打印数据包url
+    page('@rel=next').click()  # 点击下一页
+    i += 1
+    if i == 5:
+        break
+```
 
 # 查找元素
 
