@@ -339,19 +339,543 @@ page.remove_ele('tag:a')
 
 ### 执行脚本或命令
 
+> run_js()
+
+执行 js 脚本。
+
+|参数名称|类型|默认值|说明|
+|---|---|---|---|
+|`script`|`str`|必填|js脚本文本或脚本文件路径|
+|`*args`|-|无|传入的参数，按顺序在js文本中对应arguments[0]、arguments[1]...|
+|`as_expr`|`bool`|False|是否作为表达式运行，为True时args参数无效|
+|`timetout`|`float`|None|js 超时时间，为None则使用页面timeouts.script设置|
+
+|返回类型|说明|
+|---|---|
+|Any|脚本执行结果|
+
+> run_js_loaded()
+
+此方法用于运行 js 脚本，执行前等待页面加载完毕。
+
+|参数名称|类型|默认值|说明|
+|---|---|---|---|
+|`script`|`str`|必填|js脚本文本或脚本文件路径|
+|`*args`|-|无|传入的参数，按顺序在js文本中对应arguments[0]、arguments[1]...|
+|`as_expr`|`bool`|False|是否作为表达式运行，为True时args参数无效|
+|`timetout`|`float`|None|js 超时时间，为None则使用页面timeouts.script设置|
+
+|返回类型|说明|
+|---|---|
+|Any|脚本执行结果|
+
+> run_async_js()
+
+以异步方式执行 js 代码。
+
+|参数名称|类型|默认值|说明|
+|---|---|---|---|
+|`script`|`str`|必填|js脚本文本或脚本文件路径|
+|`*args`|-|无|传入的参数，按顺序在js文本中对应arguments[0]、arguments[1]...|
+|`as_expr`|`bool`|False|是否作为表达式运行，为True时args参数无效|
+
+> run_cdp()
+
+执行 Chrome DevTools Protocol 语句。
+
+cdp 用法详见[Chrome DevTools Protocol](https://chromedevtools.github.io/devtools-protocol/)。
+
+|参数名称|类型|默认值|说明|
+|---|---|---|---|
+|`cmd`|`str`|必填|协议项目|
+|`**cmd_args`|-|无|项目参数|
+
+|返回类型|说明|
+|---|---|
+|dict|执行返回的结果|
+
+> run_cdp_loaded()
+
+此方法用于执行 Chrome DevTools Protocol 语句，执行前先确保页面加载完毕。
+
+|参数名称|类型|默认值|说明|
+|---|---|---|---|
+|`cmd`|`str`|必填|协议项目|
+|`**cmd_args`|-|无|项目参数|
+
+|返回类型|说明|
+|---|---|
+|dict|执行返回的结果|
+
 ### cookies及缓存
+
+> set.cookies()
+
+此方法用于设置 cookie。可设置一个或多个。
+
+|参数名称|类型|默认值|说明|
+|---|---|---|---|
+|`cookies`|`CookieJar` `list` `tuple` `str` `dict`|必填|cookies 信息|
+
+返回：`None`
+
+> set.cookies.clear()
+
+清除所有 cookie。
+
+参数： 无
+
+返回：`None`
+
+> set.cookies.remove()
+
+删除一个 cookie。
+
+|参数名称|类型|默认值|说明|
+|---|---|---|---|
+|`name`|`str`|必填|cookie的name字段|
+|`name`|`str`|`None`|cookies的url字段|
+|`name`|`str`|`None`|cookies的domain字段|
+|`name`|`str`|`None`|cookies的path字段|
+
+> set.session_storage()
+
+此方法用于设置或删除某项sessionStorage信息。
+
+|参数名称|类型|默认值|说明|
+|---|---|---|---|
+|`item`|`str`|必填|要设置的项|
+|`value`|`str` `False`|必填|为`False`时，删除该项|
+
+> set.local_storage()
+
+用于设置或删除某项 localStorage 信息。
+
+|参数名称|类型|默认值|说明|
+|---|---|---|---|
+|`item`|`str`|必填|要设置的项|
+|`value`|`str` `False`|必填|为`False`时，删除该项|
+
+> clear_cache()
+
+用于清除缓存，可选择要清除的项。
+
+|参数名称|类型|默认值|说明|
+|---|---|---|---|
+|`session_storage`|`bool`|`True`|是否清除 sessionstorage|
+|`local_storage`|`bool`|`True`|是否清除 localStorage|
+|`cache`|`bool`|`True`|是否清除 cache|
+|`cache`|`bool`|`True`|是否清除 cookies|
 
 ### 运行参数设置
 
+|函数|功能|
+|---|---|
+|`set.retry_times()`|设置连接失败时重连次数|
+|`set.retry_interval()`|设置连接失败时重连间隔|
+|`set.timeouts()`|设置整体、页面加载、脚本运行超时时间，单位为秒。可单独设置，为None表示不改变原来设置|
+|`set.load_strategy()`|设置页面加载策略，调用其方法选择某种策略|
+|`set.user_agent()`|为浏览器当前标签页设置user agent|
+|`set.headers()`|设置额外添加到当前页面请求headers的参数。|
+
 ### 窗口管理
+
+|函数|功能|
+|---|---|
+|`set.window.max()`|窗口最大化|
+|`set.window.mini()`|窗口最小化|
+|`set.window.full()`|窗口切换到全屏模式|
+|`set.window.normal()`|窗口切换到普通模式|
+|`set.window.size()`|设置窗口大小|
+|`set.window.location()`|设置窗口位置|
+|`set.window.hide()`|隐藏浏览器窗口|
+|`set.window.show()`|显示当前浏览器窗口|
 
 ### 页面滚动
 
+|函数|功能|
+|---|---|
+|`scroll.to_top()`|滚动页面到顶部，水平位置不变|
+|`scroll.to_bottom()`|滚动页面到底部，水平位置不变|
+|`scroll.to_half()`|滚动页面到垂直中间位置，水平位置不变|
+|`scroll.to_rightmost()`|滚动页面到最右边，垂直位置不变|
+|`scroll.to_leftmost()`|滚动页面到最左边，垂直位置不变|
+|`scroll.to_location()`|滚动页面到滚动到指定位置|
+|`scroll.up()`|页面向上滚动若干像素，水平位置不变|
+|`scroll.down()`|页面向下滚动若干像素，水平位置不变|
+|`scroll.right()`|页面向右滚动若干像素，垂直位置不变|
+|`scroll.left()`|页面向左滚动若干像素，垂直位置不变|
+|`scroll.to_see()`|用于滚动页面直到指定元素可见|
+
 ### 滚动设置
+
+页面滚动有两种方式，一种是滚动时直接跳到目标位置，第二种是平滑滚动，需要一定时间。后者滚动时间难以确定，容易导致程序不稳定，点击不准确的问题。
+
+|函数|功能|
+|---|---|
+|`set.scroll.smooth()`|是否开启平滑滚动。建议关闭|
+|`set.scroll.wait_complete()`|设置滚动后是否等待滚动结束|
 
 ### 弹出消息处理
 
+> handle_alert()
+
+此方法用于处理提示框。
+它能够设置等待时间，等待提示框出现才进行处理，若超时没等到提示框，返回`False`。
+也可只获取提示框文本而不处理提示框。 还可以处理下一个出现的提示框，这在处理离开页面时触发的弹窗非常有用。
+
+|参数名称|类型|默认值|说明|
+|---|---|---|---|
+|`accept`|`bool` `None`|`True`|`True`表示确认，`False`表示取消，`None`不会按按钮但依然返回文本值|
+|`send`|`str`|`None`|处理prompt提示框时可输入文本|
+|`timeout`|`float`|`None`|等待提示框出现的超时时间，为`None`时使用页面整体超时时间|
+|`next_one`|`bool`|`False`|是否处理下一个出现的弹窗，为`True`时timeout参数无效|
+
+|`返回类型`|说明|
+|`str`|提示框内容文本|
+|`False`|未等到提示框则返回False|
+
+```python
+# 确认提示框并获取提示框文本
+txt = page.handle_alert()
+
+# 点击取消
+page.handle_alert(accept=False)
+
+# 给 prompt 提示框输入文本并点击确定
+page.handle_alert(accept=True, send='some text')
+
+# 不处理提示框，只获取提示框文本
+txt = page.handle_alert(accept=None)
+```
+
+> set.auto_handle_alert()
+
+设置自动处理该tab的提示框，使提示框不会弹窗而直接被处理掉
+
+|参数名称|类型|默认值|说明|
+|---|---|---|---|
+|`on_off`|`bool`|`True`|开或关|
+|`accept`|`bool`|`True`|确定还是取消|
+
+> set.auto_handle_alert()
+
+用于指定是否全局设置自动处理
+
+|参数名称|类型|默认值|说明|
+|---|---|---|---|
+|`on_off`|`bool`|`True`|开或关|
+|`accept`|`bool`|`True`|确定还是取消|
+|`all_tabs`|`bool`|`False`|是否为全局设置|
+
 ### 关闭及重连
+
+|函数|功能|
+|---|---|
+|`disconnect()`|页面对象断开与页面的连接，但不关闭标签页|
+|`reconnect`|关闭与页面连接，然后重建一个新连接|
+|`quit()`|关闭浏览器|
+
+## 5. 查找元素
+
+见下方[查找元素]()章节
+
+## 6. 获取元素信息
+
+### ⭐常用属性表
+
+|属性或方法|说明|
+|---|---|
+|`html`|此属性返回元素的outerHTML文本|
+|`inner_html`|此属性返回元素的innerHTML文本|
+|`tag`|此属性返回元素的标签名|
+|`text`|此属性返回元素内所有文本组合成的字符串|
+|`raw_text`|此属性返回元素内原始文本|
+|`texts()`|此方法返回元素内所有直接子节点的文本，包括元素和文本节点|
+|`comments`|此属性以列表形式返回元素内的注释|
+|`attrs`|此属性以字典形式返回元素所有属性及值|
+|`attr()`|此方法返回元素某个属性值|
+|`link`|此方法返回元素的`href`属性或`src`属性|
+|`page`|此属性返回元素所在的总控页面对象|
+|`xpath`|此属性返回当前元素在页面中xpath的绝对路径|
+|`css_path`|此属性返回当前元素在页面中css selector的绝对路径|
+
+### 大小和位置
+
+|属性或方法|说明|
+|---|---|
+|`rect.size`|以元组形式返回元素的大小|
+|`rect.location`|以元组形式返回元素左上角在整个页面中的坐标|
+|`rect.midpoint`|以元组形式返回元素中点在整个页面中的坐标|
+|⭐`rect.click_point`|以元组形式返回元素点击点在整个页面中的坐标|
+|`rect.viewport_location`|以元组形式返回元素左上角在当前视口中的坐标|
+|`rect.viewport_midpoint`|以元组形式返回元素中点在当前视口中的坐标|
+|`rect.viewport_click_point`|以元组形式返回元素点击点在当前视口中的坐标|
+|`rect.screen_location`|以元组形式返回元素左上角在屏幕中的坐标|
+|`rect.screen_midpoint`|以元组形式返回元素中点在屏幕中的坐标|
+|⭐`rect.screen_click_point`|以元组形式返回元素点击点在屏幕中的坐标|
+|`rect.screen_click_point`|以列表形式返回元素四个角在页面中的坐标，顺序：左上、右上、右下、左下|
+|`rect.viewport_corners`|此属性以列表形式返回元素四个角在视口中的坐标，顺序：左上、右上、右下、左下|
+|`rect.viewport_rect`|以列表形式返回元素四个角在视口中的坐标，顺序：左上、右上、右下、左下|
+
+### ⭐属性和内容
+
+> pseudo.before/pseudo.after
+
+文本形式返回当前元素的`::before`/`::after`伪元素内容
+
+> style()
+
+返回元素css样式属性值，可获取伪元素的属性
+
+|参数名称|类型|默认值|说明|
+|---|---|---|---|
+|`style`|`str`|必填|样式名称|
+|`pseudo_ele`|`str`|''|伪元素名称（如有）|
+
+|返回类型|说明|
+|---|---|
+|`str`|样式属性值|
+
+```python
+# 获取 css 属性的 color 值
+prop = ele.style('color')
+
+# 获取 after 伪元素的内容
+prop = ele.style('content', 'after')
+```
+
+> property()
+
+返回`property`属性值
+
+|参数名称|类型|默认值|说明|
+|---|---|---|---|
+|`name`|`str`|必填|属性名称|
+
+|返回类型|说明|
+|---|---|
+|`str`|属性值|
+
+> shadow_root
+
+返回元素内的`shadow-root`对象，没有的返回`None`
+
+### 状态信息
+
+> ⭐states.is_in_viewport
+
+元素是否在视口中，以元素可以接受点击的点为判断
+
+> ⭐states.is_whole_in_viewport
+
+元素是否整个在视口中
+
+> ❓states.is_alive
+
+当前元素是否仍可用, 用于判断d模式下是否因页面刷新而导致元素失效
+
+> ❓states.is_enabled
+
+返回元素是否可用
+
+> states.is_checked
+
+表单单选或多选元素是否选中
+
+> states.is_selected
+
+`<select>`元素中的项是否选中
+
+> states.is_displayed
+
+返回元素是否可见
+
+> states.is_covered
+
+元素是否被其它元素覆盖。如被覆盖，返回覆盖元素的 id，否则返回False
+
+> states.is_clickable
+
+回元素是否可被模拟点击，从是否有大小、是否可用、是否显示、是否响应点击判断，不判断是否被**遮挡**
+
+> states.has_rect
+
+元素是否拥有大小和位置信息，有则返回四个角在页面上的坐标组成的列表，没有则返回`False`
+
+### ⭐保存元素
+
+> src()
+
+返回元素`src`属性所使用的资源。base64 的可转为`bytes`返回，其它的以`str`返回。无资源的返回`None`。
+
+例如，可获取页面上图片字节数据，用于识别内容，或保存到文件。`<script>`标签也可获取js文本。
+
+|参数名称|类型|默认值|说明|
+|---|---|---|---|
+|`timeout`|`float`|None|等待资源加载超时时间，为None时使用元素所在页面timeout属性|
+|`base64_to_bytes`|`bool`|True|为True时，如果是 base64 数据，转换为bytes格式|
+
+|返回类型|说明|
+|---|---|
+|`str`|资源字符串|
+|`None`|无资源的返回None|
+
+> ⭐save()
+
+用于保存`src()`方法获取到的资源到文件
+
+|参数名称|类型|默认值|说明|
+|---|---|---|---|
+|`path`|`str` `Path`|None|文件保存路径，为None时保存到当前文件夹|
+|`name`|`str`|None|文件名称，需包含后缀，为None时从资源 url 获取|
+|`timeout`|`float`|None|等待资源加载超时时间，为None时使用元素所在页面timeout属性|
+|`rename`|`bool`|True|遇到重名文件时是否自动重命名|
+
+|返回类型|说明|
+|---|---|
+|`str`|保存路径|
+
+## 7. 元素交互
+
+### 点击元素
+
+> click()和click.left()
+
+左键点击元素。可选择模拟点击或js点击，**在模拟点击前，程序会先尝试把元素滚动到视口中**
+
+|参数名称|类型|默认值|说明|
+|---|---|---|---|
+|`by_js`|`bool`|False|指定点击行为方式。为None时，如不被遮挡，用模拟点击，否则用 js 点击，为True时直接用 js 点击；为False时强制模拟点击，被遮挡也会进行点击|
+|`timeout`|`float`|1.5|模拟点击的超时时间，等待元素可见、可用、进入视口|
+|`wait_stop`|`bool`|True|点击前是否等待元素停止运动|
+
+|返回值|说明|
+|---|---|
+|`False`|`by_js`为`False`，且元素不可用、不可见时，返回`False`|
+|`True`|除以上情况，其余情况都返回`True`|
+
+> click.right()
+
+右键单击元素
+
+> click.middle()
+
+中键单击元素
+
+|参数名称|类型|默认值|说明|
+|---|---|---|---|
+|`get_tab`|`bool`|True|是否返回新出现的Tab对象|
+
+|返回值|说明|
+|---|---|
+|`ChromiumTab`|`get_tab`参数为`True`时，`ChromiumPage`返回的`Tab`对象|
+|`WebPageTab`|`get_tab`参数为`True`时，`WebPage`返回的`Tab`对象|
+|`None`|`get_tab`参数为`False`时|
+
+> click.multi()
+
+|参数名称|类型|默认值|说明|
+|---|---|---|---|
+|`times`|`int`|2|点击次数|
+
+返回：`None`
+
+> click.at()
+
+此方法用于带偏移量点击元素，偏移量相对于元素左上角坐标。不传入`offset_x`和`offset_y`时点击元素中间点。
+
+|参数名称|类型|默认值|说明|
+|---|---|---|---|
+|`offset_x`|`float`|None|相对元素左上角坐标的 x 轴偏移量，向下向右为正|
+|`offset_y`|`float`|None|相对元素左上角坐标的 y 轴偏移量，向下向右为正|
+|`button`|`str`|'left'|要点击的键，传入'left'、'right'、'middle'、'back'、'forward'|
+|`count`|`int`|1|点击次数|
+
+> click.for_new_tab()
+
+在预期点击后会出现新 tab 的时候，可用此方法点击，会等待并返回新 tab 对象
+
+|参数名称|类型|默认值|说明|
+|---|---|---|---|
+|`by_js`|`bool`|False|是否用 js 方式点击，逻辑与`click()`一致|
+
+|返回类型|说明|
+|---|---|
+|`ChromiumTab`|使用`ChromiumPage`时返回|
+|`WebPageTab`|使用`WebPage`时返回|
+
+### 输入内容
+
+> clear()
+
+此方法用于清空元素文本，可选择模拟按键或 js 方式。
+
+模拟按键方式会自动输入ctrl-a-del组合键来清除文本框，js 方式则直接把元素value属性设置为''。
+
+|参数名称|类型|默认值|说明|
+|---|---|---|---|
+|`by_js`|`bool`|False|是否用 js 方式清空|
+
+> input()
+
+此方法用于向元素输入文本或组合键，也可用于输入文件路径到上传控件。可选择输入前是否清空元素。
+
+|参数名称|类型|默认值|说明|
+|---|---|---|---|
+|`vals`|`Any`|False|文本值或按键组合，对文件上传控件时输入路径字符串或其组成的列表|
+|`clear`|`bool`|False|输入前是否清空文本框|
+|`by_js`|`bool`|False|是否用js方式输入，为`True`时不能输入组合键|
+
+> [!NOTE]
+> 有些文本框可以接收回车代替点击按钮，可以直接在文本末尾加上'\n'。   
+> 会自动把非`str`数据转换为`str`。是否用js方式输入，为True时不能输入组合键
+
+> 输入组合键
+
+组合键或要传入特殊按键前，先要导入按键类`Keys`
+
+```python
+from DrissionPage.common import Keys
+```
+
+`Keys`内置了5个常用组合键，分别为`CTRL_A`、`CTRL_C`、`CTRL_X`、`CTRL_V`、`CTRL_Z`、`CTRL_Y`。
+
+> focus()
+
+用于使元素获取焦点
+
+### 拖拽和悬停
+
+> drag()
+
+拖拽元素到相对于当前的一个新位置，可以设置速度
+
+|参数名称|类型|默认值|说明|
+|---|---|---|---|
+|`offset_x`|`int`|0|x轴偏移量，向下向右为正|
+|`offset_y`|`int`|0|y轴偏移量，向下向右为正|
+|`duration`|`float`|0.5|用时，单位秒，传入0即瞬间到达|
+
+> drag_to()
+
+拖拽元素到另一个元素上或一个坐标上
+
+|参数名称|类型|默认值|说明|
+|---|---|---|---|
+|`ele_or_loc`|`ChromiumElement` `Tuple[int, int]`|0|另一个元素对象或坐标元组|
+|`duration`|`float`|0.5|用时，单位秒，传入0即瞬间到达|
+
+> hover()
+
+模拟鼠标悬停在元素上，可接受偏移量，偏移量相对于元素左上角坐标。不传入offset_x和offset_y值时悬停在元素中点
+
+|参数名称|类型|默认值|说明|
+|---|---|---|---|
+|`offset_x`|`int`|0|x轴偏移量，向下向右为正|
+|`offset_y`|`int`|0|y轴偏移量，向下向右为正|
+
+## 8. ⭐监听网络数据
 
 # 查找元素
 
