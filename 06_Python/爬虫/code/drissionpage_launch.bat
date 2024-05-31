@@ -1,0 +1,1 @@
+"C:\Program Files\Google\Chrome\Application\chrome.exe"  --remote-debugging-port=9222  --remote-allow-origins=*  --user-data-dir="C:\Users\10250\AppData\Local\Temp\DrissionPage"

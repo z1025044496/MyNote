@@ -1,5 +1,15 @@
 # 
 
+# DrissionPage库功能
+
+* `SessionPage`：单纯用于收发数据包的页面对象
+* `ChromiumPage`：单纯用于操作浏览器的页面对象
+* `WebPage`：整合浏览器控制和收发数据包于一体的页面对象
+
+# SessionPage
+
+
+
 # ChromiumPage
 
 ## 1. 启动或者接管浏览器
