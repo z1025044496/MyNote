@@ -1,4 +1,4 @@
-from DrissionPage import ChromiumPage
+from DrissionPage import ChromiumPage, ChromiumOptions
 import time
 import sys
 import json
@@ -14,10 +14,9 @@ def save_json(json_str: str, file_path: str):
     return res
 
 if __name__ == '__main__':
-    ''' 1. 启动浏览器 '''
-    from DrissionPage import ChromiumPage
 
     ''' 1. 启动浏览器 '''
+    op = ChromiumOptions()
     page = ChromiumPage(addr_or_opts = 6333, timeout = 10)
     work_tab = page.get_tab()
     work_tab.set.cookies.clear()
