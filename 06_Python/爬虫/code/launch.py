@@ -84,7 +84,7 @@ if __name__ == '__main__':
     page_input.input(2)
     work_tab.ele('.next-btn next-medium next-btn-normal next-pagination-jump-go').click()
 
-    res = page.listen.wait()
+    res = page.listen.wait(timeout=10)
     result: str = res.response.body
     begin = result.find('(')
     end = result.rfind(')')
