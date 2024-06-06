@@ -41,8 +41,8 @@ if __name__ == '__main__':
 
     ''' 3. 网页交互 '''
     # 输入框
-    account = '15263988329'
-    password = 'haifei1997?vm'
+    account = '****'
+    password = '************'
     work_tab.ele('@name=fm-login-id').input(account, True)
     time.sleep(2)
     work_tab.ele('@name=fm-login-password').input(password, True)
