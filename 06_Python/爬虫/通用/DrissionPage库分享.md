@@ -1,14 +1,10 @@
 # DrissionPage库功能
 
-
-
 * `SessionPage`：单纯用于收发数据包的页面对象
 * `ChromiumPage`：单纯用于操作浏览器的页面对象
 * `WebPage`：整合浏览器控制和收发数据包于一体的页面对象
 
-
-
-#  `ChromiumPage`
+# `ChromiumPage`
 
 * selenium库控制浏览器需要[chromedriver.exe](https://googlechromelabs.github.io/chrome-for-testing/)
 * DrissionPage库在3.0版本之前通过selenium控制浏览器的，需要依赖selenium库，3.0后用chromium协议自行实现了selenium全部功能
@@ -58,8 +54,8 @@ if __name__ == '__main__':
 
     ''' 3. 网页交互 '''
     # 输入框
-    account = '15263988329'
-    password = 'haifei1997?vm'
+    account = '****'
+    password = '****************'
     work_tab.ele('@name=fm-login-id').input(account, True)
     time.sleep(2)
     work_tab.ele('@name=fm-login-password').input(password, True)
@@ -308,6 +304,7 @@ page.get('https://DrissionPage.cn')
 |`NoneElement`|未找到符合条件的元素时返回|
 
 > [!NOTE]
+>
 > * *元组是指`selenium`定位符，例：(By.ID, 'XXXXX')。下同。  
 > * `ele('xxxx', index=2)`和`eles('xxxx')[1]`结果一样，不过前者会快很多。
 
@@ -415,6 +412,7 @@ page.ele('#txtKey')
 |`click.for_new_tab()`|点击后会出现新tab的时候，可用此方法点击，会等待并返回新tab对象|
 
 > [!NOTE]
+>
 > 1. 鼠标点击中`click()`/`click.left()`/`click.to_upload()`/`click.to_download()`/`click.for_new_tab()`可以选择JS点击或者模拟点击
 > 2. 模拟点击会先尝试把元素滚动到视口中
 > 3. JS点击可以无视元素遮挡
@@ -428,6 +426,7 @@ page.ele('#txtKey')
 |`focus()`|使元素获取焦点|
 
 > [!NOTE]
+>
 > 1. 模拟按键是模拟键盘的输入
 > 2. JS方式不能使用组合键,是直接设置元素value属性
 
@@ -575,11 +574,13 @@ ele.click()
 返回：`None`
 
 > [!NOTE]
-> 1. 多个特征，符合条件的数据包会被获取   
+>
+> 1. 多个特征，符合条件的数据包会被获取
 > 2. 监听未停止时调用这个方法，可清除已抓取的队列
 
 > [!WARNING]
-> 1. 当`targets`不为`None`，`is_regex`会自动设为`False` 
+>
+> 1. 当`targets`不为`None`，`is_regex`会自动设为`False`
 > 2. 即如要使用正则，每次设置`targets`时需显式指定`is_regex=True`
 
 #### 📎`listen.set_targets()`
