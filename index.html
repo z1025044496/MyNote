@@ -10,6 +10,9 @@
   <!-- 控制台样式 -->
   <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/spite-triangle/docsify-terminal@latest/css/term.css"/>
   <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
+
+  <link rel="stylesheet" href="//unpkg.com/mermaid/dist/mermaid.min.css" />
+
   <!-- 代码块行号 -->
   <link rel="stylesheet" href="https://fastly.jsdelivr.net/gh/spite-triangle/docsify-codeLineNum@latest/css/codeLineNum.css" />
 
@@ -33,6 +36,34 @@
         noData: '找不到结果',
         depth: 3,
       },
+      plugins: [
+        function (hook, vm) {
+          hook.ready(function () {
+            // 类似 jQuery.ready 初始化 mermaid, 禁用自动渲染
+            mermaid.initialize({ startOnLoad: false });
+          });
+          hook.doneEach(function () {
+            // 每个页面渲染完成后手动渲染 mermaid 图表
+            mermaid.init(undefined, '.mermaid');
+          });
+        }
+      ],
+      markdown: {
+        renderer: {
+          code: function(code, lang) {
+          var html = '';
+          // 搜索 mermaid 代码
+          if(code.match(/^sequenceDiagram/) || code.match(/^graph/) || code.match(/^gantt/)){
+            // 生成一个 mermaid 图表的容器
+            html = '<div class="mermaid">' + code + '</div>';
+          }
+          // 源码自带的 Prism 高亮插件
+          var hl = Prism.highlight(code, Prism.languages[lang] || Prism.languages.markup)
+          // 将图表的容器添加到代码之前
+          return html + '<pre v-pre data-lang="' + lang + '"><code class="lang-' + lang + '">' + hl + '</code></pre>'
+          }
+        }
+      },
       codeLineNum: {
         blacklist: ['term','txt'],
       }
@@ -53,6 +84,8 @@
   <script src="https://fastly.jsdelivr.net/npm/prismjs/components/prism-php.js"></script>
   <script src="https://fastly.jsdelivr.net/npm/prismjs/components/prism-qml.js"></script>
   <script src="https://fastly.jsdelivr.net/npm/prismjs/components/prism-cmake.js"></script>
+
+  <script type="text/javascript" src="//unpkg.com/mermaid/dist/mermaid.min.js"></script>
 
   <!-- 控制台样式 -->
   <script src="https://cdn.jsdelivr.net/gh/spite-triangle/docsify-terminal@latest/script/term.min.js"></script>
