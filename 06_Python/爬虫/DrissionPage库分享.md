@@ -67,6 +67,10 @@ page = ChromiumPage(6222)
 
 none()模式下，只在连接阶段阻塞程序，加载阶段可自行根据情况执行stop_loading()停止加载
 
+### Selenium
+
+
+
 ```python
 from DrissionPage import ChromiumPage
 
