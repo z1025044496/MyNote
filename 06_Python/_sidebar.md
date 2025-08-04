@@ -1,5 +1,6 @@
 * [HOME](/README.md)
 * [python语法](/06_Python/python语法/python.md)
+* [一些库](/06_Python/一些库/Pydantic.md)
 * [虚拟环境](/06_Python/虚拟环境/venvl.md)
 * [Scrapy框架](/06_Python/爬虫/通用/Scrapy框架.md)
 * [DrissionPage](/06_Python/爬虫/通用/DrissionPage库.md)

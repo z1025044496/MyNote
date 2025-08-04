@@ -3,4 +3,5 @@
 * [Leetcode](/03_Leetcode/README.md)
 * [HTML](/05_html/README.md)
 * [Python](/06_Python/README.md)
+* [设计模式](/07_designPatterns/README.md)
 * [other](/04_other/README.md)

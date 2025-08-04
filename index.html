@@ -11,13 +11,16 @@
   <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/spite-triangle/docsify-terminal@latest/css/term.css"/>
   <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
 
-  <link rel="stylesheet" href="//unpkg.com/mermaid/dist/mermaid.min.css" />
+  <!-- <link rel="stylesheet" href="//unpkg.com/mermaid/dist/mermaid.min.css" /> -->
 
   <!-- 代码块行号 -->
   <link rel="stylesheet" href="https://fastly.jsdelivr.net/gh/spite-triangle/docsify-codeLineNum@latest/css/codeLineNum.css" />
 
   <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css">
   <link rel="stylesheet" href="//fastly.jsdelivr.net/npm/katex@latest/dist/katex.min.css" />
+
+  <!-- 引入 Mermaid -->
+  <!-- <link rel="stylesheet" href="//unpkg.com/mermaid/dist/mermaid.min.css" /> -->
 
 </head>
 <body>
@@ -85,7 +88,7 @@
   <script src="https://fastly.jsdelivr.net/npm/prismjs/components/prism-qml.js"></script>
   <script src="https://fastly.jsdelivr.net/npm/prismjs/components/prism-cmake.js"></script>
 
-  <script type="text/javascript" src="//unpkg.com/mermaid/dist/mermaid.min.js"></script>
+  <!-- <script type="text/javascript" src="//unpkg.com/mermaid/dist/mermaid.min.js"></script> -->
 
   <!-- 控制台样式 -->
   <script src="https://cdn.jsdelivr.net/gh/spite-triangle/docsify-terminal@latest/script/term.min.js"></script>
@@ -93,5 +96,12 @@
   <script src="https://cdn.jsdelivr.net/gh/spite-triangle/docsify-codeLineNum@latest/script/codeLineNum.min.js"></script>
   <!-- Latest  NOTE/TIP/WARNING/ATTENTION -->
   <script src="https://unpkg.com/docsify-plugin-flexible-alerts"></script>
+  <!-- 引入 Mermaid -->
+  <script type="module">
+    import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs";
+    mermaid.initialize({ startOnLoad: true });
+    window.mermaid = mermaid;
+  </script>
+  <script src="//unpkg.com/docsify-mermaid@2.0.1/dist/docsify-mermaid.js"></script>
 </body>
 </html>
