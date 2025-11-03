@@ -3,5 +3,4 @@
 * [C++并发](/01_C++/C++并发/thread.md)
 * [CMake](/01_C++/CMake/CMake.md)
 * [算法](/01_C++/算法/时间复杂度/时间复杂度.md)
-* [PureMVC](/01_C++/pureMVC/pureMVC.md)
-* [Python/C api](/01_C++/Python_C_API/Pthon_C_API.md)
+* [工具](/01_C++/工具/OpenCppCoverage.md)
