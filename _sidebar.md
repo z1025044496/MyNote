@@ -4,4 +4,5 @@
 * [HTML](/05_html/README.md)
 * [Python](/06_Python/README.md)
 * [设计模式](/07_designPatterns/README.md)
+* [设计模式](/08_AI/AI.md)
 * [other](/04_other/README.md)
